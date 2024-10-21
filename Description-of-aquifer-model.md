@@ -1,7 +1,7 @@
 ### Equations
 *Equations in this section are taken from Chapter 7 of Wang (2000) Theory of Linear Poroelasticity*
 
-This poroelastic model solves for pore pressure $p$ and displacement components $u$ and $v$ inside an aquifer cross-section in a state of plane strain, i.e., meaning that the displacement components are independent of $z$, such that strains $\varepsilon_{zz} = \varepsilon_{xz} = \varepsilon_{yz}= 0$. All quantities considered here describe changes with respect to a reference state (e.g., hydrostatic equilibrium). The aquifer has spatially uniform hydro-mechanical properties. 
+This poroelastic model solves for pore pressure $p$ and displacement components $u$ and $v$ inside an aquifer cross-section in a state of plane strain, meaning that the displacement components are independent of $z$, such that strains $\varepsilon_{zz} = \varepsilon_{xz} = \varepsilon_{yz}= 0$. All quantities considered here describe changes with respect to a reference state (e.g., hydrostatic equilibrium). The aquifer has spatially uniform hydro-mechanical properties. 
 
 To solve for our 3 unknown $p$, $u$ and $v$, we have to solve 2 mechanical equations and 1 fluid pressure diffusion equation at every gridpoint. The two mechanical equations to be solved are obtained by substituting the constitutive equation relating stress ($\sigma_{ij}$), strains ($\varepsilon_{ij}$) and pore pressure ($p$): 
 
@@ -47,7 +47,7 @@ $$\frac{2-2\nu}{1-2\nu}\left(\frac{v_{i,j+1}^{n+1}-2v_{i,j}^{n+1}+v_{i,j-1}^{n+1
 
 $$\frac{\alpha}{\Delta t}\left(\frac{u_{i+1,j}^{n+1}-u_{i-1,j}^{n+1}+u_{i+1,j}^{n}-u_{i-1,j}^{n}}{2\Delta x}+\frac{v_{i,j+1}^{n+1}-v_{i,j-1}^{n+1}+v_{i,j+1}^{n}-v_{i,j-1}^{n}}{2\Delta y}\right)+S_\varepsilon\left(\frac{p_{i,j}^{n+1}-p_{i,j}^n}{\Delta t}\right)=\frac{k}{\mu}\left(\frac{p_{i+1,j}^{n+1}-2p_{i,j}^{n+1}+p_{i-1,j}^{n+1}}{2\Delta x}+\frac{p_{i,j+1}^{n+1}-2p_{i,j}^{n+1}+p_{i,j-1}^{n+1}}{2\Delta y}\right)$$
 
-Where the superscript indicates the time step and the subscripts the spatial positions. We can rearrange the equations to have all unknown quantities (those at time $n+1$) are on the LHS and known quantities (those at time $n$) on the RHS: 
+Where the superscript indicates the time step and the subscripts the spatial positions. We can rearrange the equations such that all unknown quantities (those at time $n+1$) are on the LHS and known quantities (those at time $n$) on the RHS: 
 
 $$\frac{2-2\nu}{1-2\nu}\left(\frac{u_{i+1,j}^{n+1}-2u_{i,j}^{n+1}+u_{i-1,j}^{n+1}}{(\Delta x)^2}\right)+\left(\frac{u_{i,j+1}^{n+1}-2u_{i,j}^{n+1}+u_{i,j-1}^{n+1}}{(\Delta y)^2}\right)+\\
 \frac{1}{1-2\nu}\left(\frac{v_{i+1,j+1}^{n+1}-v_{i+1,j-1}^{n+1}-v_{i-1,j+1}^{n+1}+v_{i-1,j-1}^{n+1}}{4\Delta x\Delta y}\right) -\frac{\alpha}{G}\frac{p_{i+1,j}^{n+1}-p_{i-1,j}^{n+1}}{2\Delta x}=0$$
@@ -59,7 +59,7 @@ $$\alpha\left(\frac{u_{i+1,j}^{n+1}-u_{i-1,j}^{n+1}}{2\Delta x}+\frac{v_{i,j+1}^
 
 such that the equations form a system of equation of type $\mathbf{Ax} = \mathbf{b}$ where $m\times m$ matrix $\mathbf{A}$ stores all the constant coefficients, $m \times 1$ vector $\mathbf{x}$ contains the unknown quantities $u$, $v$ and $p$ at time $n+1$ and $m\times 1$ vector $\mathbf{b}$ contains the RHS of the equations, which are either $\mathbf{0}$ or functions of known quantities at time $n$.
 
-- Note that to make the solution second-order accurate in time, we could, fairly easily, implement a Crank-Nicolson scheme.
+- Note that to make the solution second-order accurate in time, we could implement a Crank-Nicolson scheme.
 
 ### Boundary conditions
 In addition to the three equations above, we also have to add 3 additional equations at each boundary to $\mathbf{A}$ to implement the boundary conditions. 
