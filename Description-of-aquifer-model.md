@@ -49,8 +49,8 @@ $$\frac{\alpha}{\Delta t}\left(\frac{u_{i+1,j}^{n+1}-u_{i-1,j}^{n+1}+u_{i+1,j}^{
 
 Where the superscript indicates the time step and the subscripts the spatial positions. We can rearrange the equations such that all unknown quantities (those at time $n+1$) are on the LHS and known quantities (those at time $n$) on the RHS: 
 
-$$\frac{2-2\nu}{1-2\nu}\left(\frac{u_{i+1,j}^{n+1}-2u_{i,j}^{n+1}+u_{i-1,j}^{n+1}}{(\Delta x)^2}\right)+\left(\frac{u_{i,j+1}^{n+1}-2u_{i,j}^{n+1}+u_{i,j-1}^{n+1}}{(\Delta y)^2}\right)+\\
-\frac{1}{1-2\nu}\left(\frac{v_{i+1,j+1}^{n+1}-v_{i+1,j-1}^{n+1}-v_{i-1,j+1}^{n+1}+v_{i-1,j-1}^{n+1}}{4\Delta x\Delta y}\right) -\frac{\alpha}{G}\frac{p_{i+1,j}^{n+1}-p_{i-1,j}^{n+1}}{2\Delta x}=0$$
+$$\frac{2-2\nu}{1-2\nu}\left(\frac{u_{i+1,j}^{n+1}+u_{i-1,j}^{n+1}}{(\Delta x)^2}\right)+\left(\frac{u_{i,j+1}^{n+1}+u_{i,j-1}^{n+1}}{(\Delta y)^2}\right)-2\left(\frac{2-2\nu}{1-2\nu}\frac{1}{(\Delta x)^2}+\frac{1}{(\Delta y)^2}\right)u_{i,j}^{n+1}\\
++\frac{1}{1-2\nu}\left(\frac{v_{i+1,j+1}^{n+1}-v_{i+1,j-1}^{n+1}-v_{i-1,j+1}^{n+1}+v_{i-1,j-1}^{n+1}}{4\Delta x\Delta y}\right) -\frac{\alpha}{G}\frac{p_{i+1,j}^{n+1}-p_{i-1,j}^{n+1}}{2\Delta x}=0$$
 
 $$\frac{2-2\nu}{1-2\nu}\left(\frac{v_{i,j+1}^{n+1}-2v_{i,j}^{n+1}+v_{i,j-1}^{n+1}}{(\Delta y)^2}\right)+\left(\frac{v_{i+1,j}^{n+1}-2v_{i,j}^{n+1}+v_{i-1,j}^{n+1}}{(\Delta x)^2}\right)+\\
 \frac{1}{1-2\nu}\left(\frac{u_{i+1,j+1}^{n+1}-u_{i+1,j-1}^{n+1}-u_{i-1,j+1}^{n+1}+u_{i-1,j-1}^{n+1}}{4\Delta x\Delta y}\right) -\frac{\alpha}{G}\frac{p_{i,j+1}^{n+1}-p_{i,j-1}^{n+1}}{2\Delta y}=0$$
