@@ -3,7 +3,7 @@
 
 This poroelastic model solves for pore pressure $p$ and displacement components $u$ and $v$ inside an aquifer cross-section in a state of plane strain, meaning that the displacement components are independent of $z$, such that strains $\varepsilon_{zz} = \varepsilon_{xz} = \varepsilon_{yz}= 0$. All quantities considered here describe changes with respect to a reference state (e.g., hydrostatic equilibrium). The aquifer has spatially uniform hydro-mechanical properties. 
 
-To solve for our 3 unknown $p$, $u$ and $v$, we have to solve 2 mechanical equations and 1 fluid pressure diffusion equation at every gridpoint. The two mechanical equations to be solved are obtained by substituting the constitutive equation relating stress ($\sigma_{ij}$), strains ($\varepsilon_{ij}$) and pore pressure ($p$): 
+To solve for our 3 unknown $p$ (pore pressure), $u$ (horizontal displacement) and $v$ (vertical displacement), we have to solve 2 mechanical equations and 1 fluid pressure diffusion equation at every gridpoint. The two mechanical equations to be solved are obtained by substituting the constitutive equation relating stress ($\sigma_{ij}$), strains ($\varepsilon_{ij}$) and pore pressure ($p$): 
 
 $$\sigma_{ij} = 2G \varepsilon_{ij} + 2G\frac{\nu}{1-2\nu}\varepsilon_{kk}\delta_{ij}-\alpha p \delta_{ij}$$
 
@@ -59,10 +59,24 @@ $$\frac{1}{\Delta t}\left(\frac{u_{i+1,j}^{n+1}-u_{i-1,j}^{n+1}}{2\Delta x}+\fra
 
 such that the equations form a system of equation of type $\mathbf{Ax} = \mathbf{b}$ where $m\times m$ matrix $\mathbf{A}$ stores all the constant coefficients, $m \times 1$ vector $\mathbf{x}$ contains the unknown quantities $u$, $v$ and $p$ at time $n+1$ and $m\times 1$ vector $\mathbf{b}$ contains the RHS of the equations, which are either $\mathbf{0}$ or functions of known quantities at time $n$.
 
-- Note that to make the solution second-order accurate in time, we could implement a Crank-Nicolson scheme.
+- Note that to make the solution second-order accurate in time, we would have to implement a Crank-Nicolson scheme.
 
 ### Boundary conditions
-In addition to the three equations above, we also have to add 3 additional equations at each boundary to $\mathbf{A}$ to implement the boundary conditions. 
+The current model has the following boundary conditions: 
+
+**Left boundary**: $u = 0$, $\frac{\partial v}{\partial x} = 0$, and $\frac{\partial p}{\partial x} = 0$ such that the problem is horizontal symmetric
+
+These are implemented by:
+- Replacing the first mechanical equation by u = 0 and setting $u_{i-1,j}^{n+1}=0$, $u_{i-1,j-1}^{n+1}=0$, and  $u_{i-1,j+1}^{n+1}=0$ in $\mathbf{A}$ and $u_{i-1,j}^{n}=0$ in the $\mathbf{b}$ vector;
+- Replacing $v_{i-1,j}^{n+1}$ with $v_{i+1,j}^{n+1}$ in $\mathbf{A}$ since $v_{i+1,j}^{n+1} - v_{i-1,j}^{n+1} = 0$;
+- Replacing $p_{i-1,j}^{n+1}$ with $p_{i+1,j}^{n+1}$ in $\mathbf{A}$ since $p_{i+1,j}^{n+1} - p_{i-1,j}^{n+1} = 0$.
+
+**Right boundary**: $u = 0$, $v = 0$, and $\frac{\partial p}{\partial x} = 0$
+
+These are implemented by:
+- Setting $u_{i+1,j}^{n+1}=0$, $u_{i+1,j-1}^{n+1}=0$, and  $u_{i+1,j+1}^{n+1}=0$ in $\mathbf{A}$ and $u_{i+1,j}^{n}=0$ in the $\mathbf{b}$ vector;
+- Setting $v_{i+1,j}^{n+1}=0$, $v_{i+1,j-1}^{n+1}=0$, and  $v_{i+1,j+1}^{n+1}=0$ in $\mathbf{A}$; 
+- Replacing $p_{i-1,j}^{n+1}$ with $p_{i+1,j}^{n+1}$ in $\mathbf{A}$ since $p_{i+1,j}^{n+1} - p_{i-1,j}^{n+1} = 0$.
 
 *Mechanical boundary conditions:*
 - Fixed displacement boundary conditions: e.g., $u_{1,j}^{n+1}=0$ to prescribe zero horizontal displacement on the left boundary. 
