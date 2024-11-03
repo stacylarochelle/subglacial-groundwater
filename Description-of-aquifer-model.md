@@ -62,21 +62,37 @@ such that the equations form a system of equation of type $\mathbf{Ax} = \mathbf
 - Note that to make the solution second-order accurate in time, we would have to implement a Crank-Nicolson scheme.
 
 ### Boundary conditions
-The current model has the following boundary conditions: 
+Model 1.1 has the following boundary conditions: 
 
-**Left boundary**: $u = 0$, $\frac{\partial v}{\partial x} = 0$, and $\frac{\partial p}{\partial x} = 0$ such that the problem is horizontal symmetric
+**Left boundary ($i==0$)**: $u = 0$, $\frac{\partial v}{\partial x} = 0$, and $\frac{\partial p}{\partial x} = 0$ such that the problem is horizontally symmetric
 
 These are implemented by:
-- Replacing the first mechanical equation by u = 0 and setting $u_{i-1,j}^{n+1}=0$, $u_{i-1,j-1}^{n+1}=0$, and  $u_{i-1,j+1}^{n+1}=0$ in $\mathbf{A}$ and $u_{i-1,j}^{n}=0$ in the $\mathbf{b}$ vector;
+- Replacing the first mechanical equation by $u_{i,j}^{n+1} = 0$ and setting $u_{i-1,j}^{n+1}=0$ in $\mathbf{A}$ and $u_{i-1,j}^{n}=0$ in the $\mathbf{b}$ vector;
 - Replacing $v_{i-1,j}^{n+1}$ with $v_{i+1,j}^{n+1}$ in $\mathbf{A}$ since $v_{i+1,j}^{n+1} - v_{i-1,j}^{n+1} = 0$;
 - Replacing $p_{i-1,j}^{n+1}$ with $p_{i+1,j}^{n+1}$ in $\mathbf{A}$ since $p_{i+1,j}^{n+1} - p_{i-1,j}^{n+1} = 0$.
 
-**Right boundary**: $u = 0$, $v = 0$, and $\frac{\partial p}{\partial x} = 0$
+**Right boundary ($i==nx-1$)**: $u = 0$, $v = 0$, and $\frac{\partial p}{\partial x} = 0$
 
 These are implemented by:
-- Setting $u_{i+1,j}^{n+1}=0$, $u_{i+1,j-1}^{n+1}=0$, and  $u_{i+1,j+1}^{n+1}=0$ in $\mathbf{A}$ and $u_{i+1,j}^{n}=0$ in the $\mathbf{b}$ vector;
-- Setting $v_{i+1,j}^{n+1}=0$, $v_{i+1,j-1}^{n+1}=0$, and  $v_{i+1,j+1}^{n+1}=0$ in $\mathbf{A}$; 
-- Replacing $p_{i-1,j}^{n+1}$ with $p_{i+1,j}^{n+1}$ in $\mathbf{A}$ since $p_{i+1,j}^{n+1} - p_{i-1,j}^{n+1} = 0$.
+- Replacing the first mechanical equation by $u_{i,j}^{n+1} = 0$ and setting $u_{i+1,j}^{n+1}=0$ in $\mathbf{A}$ and $u_{i+1,j}^{n}=0$ in the $\mathbf{b}$ vector;
+- Replacing the first mechanical equation by $v_{i,j}^{n+1} = 0$ and setting $v_{i+1,j}^{n+1}=0$ in $\mathbf{A}$;
+- Replacing $p_{i+1,j}^{n+1}$ with $p_{i-1,j}^{n+1}$ in $\mathbf{A}$ since $p_{i+1,j}^{n+1} - p_{i-1,j}^{n+1} = 0$.
+
+**Bottom boundary ($j==0$)**: $u = 0$, $v = 0$, and $\frac{\partial p}{\partial y} = 0$
+
+These are implemented by:
+- Replacing the first mechanical equation by $u_{i,j}^{n+1} = 0$ and setting $u_{i,j-1}^{n+1}=0$ in $\mathbf{A}$;
+- Replacing the first mechanical equation by $v_{i,j}^{n+1} = 0$ and setting $v_{i,j-1}^{n+1}=0$ in $\mathbf{A}$ and $v_{i,j-1}^{n}=0$ in $\mathbf{b}$;
+- Replacing $p_{i,j-1}^{n+1}$ with $p_{i,j+1}^{n+1}$ in $\mathbf{A}$ since $p_{i,j+1}^{n+1} - p_{i,j-1}^{n+1} = 0$.
+
+**Left half of top boundary ($j==ny-1$ and $i<=ny/2$)**: $\sigma = \sigma_{ice}$, $\tau = \tau_{ice}$, and $\frac{\partial p}{\partial y} = 0$
+
+These are implemented by: 
+
+
+**Right half of top boundary ($j==ny-1$ and $i>ny/2$)**: $\sigma = 0$, $\tau = 0$, and $p = 0$
+
+
 
 *Mechanical boundary conditions:*
 - Fixed displacement boundary conditions: e.g., $u_{1,j}^{n+1}=0$ to prescribe zero horizontal displacement on the left boundary. 
