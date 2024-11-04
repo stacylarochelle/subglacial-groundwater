@@ -85,40 +85,32 @@ These are implemented by:
 - Replacing the first mechanical equation by $v_{i,j}^{n+1} = 0$ and setting $v_{i,j-1}^{n+1}=0$ in $\mathbf{A}$ and $v_{i,j-1}^{n}=0$ in $\mathbf{b}$;
 - Replacing $p_{i,j-1}^{n+1}$ with $p_{i,j+1}^{n+1}$ in $\mathbf{A}$ since $p_{i,j+1}^{n+1} - p_{i,j-1}^{n+1} = 0$.
 
-**Left half of top boundary ($j==ny-1$ and $i<=ny/2$)**: $\sigma = \sigma_{ice}$, $\tau = \tau_{ice}$, and $\frac{\partial p}{\partial y} = 0$
+**Left half of top boundary ($j==ny-1$ and $i<=ny/2$)**: $\sigma_{yy} = \sigma_{ice}$, $\sigma_{xy} = \tau_{ice}$, and $\frac{\partial p}{\partial y} = 0$
 
-These are implemented by: 
+Fixed stress boundary conditions are implemented through the constitutive relationships.
 
-
-**Right half of top boundary ($j==ny-1$ and $i>ny/2$)**: $\sigma = 0$, $\tau = 0$, and $p = 0$
-
-
-
-*Mechanical boundary conditions:*
-- Fixed displacement boundary conditions: e.g., $u_{1,j}^{n+1}=0$ to prescribe zero horizontal displacement on the left boundary. 
-- Fixed displacement gradient boundary condition: e.g., $v_{1,j}^{n+1}-v_{3,j}^{n+1}=0$ to prescribe zero gradient in vertical displacements on the left boundary. 
-- Fixed stress boundary conditions are implemented through the constitutive relationships:
-	- e.g., to set $\sigma_{yy}(x,0) = \sigma_{ice}$:
+- For $\sigma_{yy}(x,0) = \sigma_{ice}$:
  
 $$\sigma_{yy} = 2G\varepsilon_{yy}+2G\frac{\nu}{1-2\nu}(\epsilon_{xx}+\varepsilon_{yy})-\alpha p$$
 
 $$\sigma_{ice} = 2G\frac{\partial v}{\partial y}+2G\frac{\nu}{1-2\nu}\left(\frac{\partial u}{\partial x}+\frac{\partial v}{\partial y}\right)-\alpha p$$
 
-$$2G\left(\frac{v_{i,3}^{n+1}-v_{i,1}^{n+1}}{2\Delta y}\right)+2G\frac{\nu}{1-2\nu}\left(\frac{u_{i+1,2}^{n+1}-v_{i-1,2}^{n+1}}{2\Delta x}+\frac{v_{i,3}^{n+1}-v_{i,1}^{n+1}}{2\Delta y}\right)-\alpha p_{i,2}^{n+1} = \sigma_{ice}$$
+$$\frac{v_{i,j+1}^{n+1}-v_{i,j-1}^{n+1}}{2\Delta y} = \left(\frac{1-2\nu}{1-\nu}\right)\frac{1}{2G}(\sigma_{ice}+\alpha p_{i,j}^{n+1})-\left(\frac{\nu}{1-\nu}\right)\left(\frac{u_{i+1,j}^{n+1}-u_{i-1,j}^{n+1}}{2 \Delta x}\right)$$
 
-- e.g., to set $\sigma_{xy}(x,0) = \tau_{ice}$:
-  
+- For $\sigma_{xy}(x,0) = \tau_{ice}$:
+
 $$ \sigma_{xy} = 2G\varepsilon_{xy} $$
 
 $$\tau_{ice}= G\left(\frac{\partial u}{\partial y}+\frac{\partial v}{\partial x}\right)$$ 
 
-$$G\left(\frac{u_{i,3}^{n+1}-u_{i,1}^{n+1}}{2\Delta y}+\frac{v_{i+1,2}^{n+1}-v_{i-1,2}^{n+1}}{2\Delta x}\right)=\tau_{ice}$$
+$$\frac{u_{i,j+1}^{n+1}-u_{i,j-1}^{n+1}}{2\Delta y}= -\frac{v_{i+1,j}^{n+1}-v_{i-1,j}^{n+1}}{2\Delta x}+\frac{\tau_{ice}}{G}$$
 
-Again, all unknown quantities at $n+1$ to be solved for are on the LHS of the equations and the known quantities -- $\sigma_{ice}$ and $\tau_{ice}$ -- are on the RHS. 
+These expressions can then be used to substitute the boundary values in the fluid diffusion equation and the 2 mechanical equations. 
 
-*Fluid boundary conditions:*
-- Fixed pore pressure boundary conditions: e.g., $p_{i,1}^{n+1} =0$ or $p_{i,1}^{n+1} =p_{subglacial}$ to prescribe pore pressure at the top boundary. 
-- No-flow boundary conditions: e.g., $p_{i,m+1}^{n+1}-p_{i,m-1}^{n+1}=0$ to set a no-flow boundary condition at the aquifer-bedrock interface.
+**Right half of top boundary ($j==ny-1$ and $i>ny/2$)**: $\sigma_{yy} = 0$, $\sigma_{xy} = 0$, and $p = 0$
+
+- This is implemented similarly as above except that $\sigma_{ice}$ and $\tau_{ice}$ are set to 0.
+- $p = 0$ is implemented by replacing the fluid equation by $p_{i,j}^{n+1} = 0$ and setting $p_{i,j+1}^{n+1} = 0$ in the mechanical equations.
 
 ### Solving for $\textbf{x}$:
 - The distributions of $u$, $v$ and $p$ at time $n+1$ stored in $\textbf{x}$ can then be solved for by taking the inverse of $\textbf{A}$ and multiplying by $\textbf{b}$:
