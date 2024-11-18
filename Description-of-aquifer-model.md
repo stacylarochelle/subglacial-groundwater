@@ -95,7 +95,7 @@ $$\sigma_{yy} = 2G\varepsilon_{yy}+2G\frac{\nu}{1-2\nu}(\epsilon_{xx}+\varepsilo
 
 $$\sigma_{ice} = 2G\frac{\partial v}{\partial y}+2G\frac{\nu}{1-2\nu}\left(\frac{\partial u}{\partial x}+\frac{\partial v}{\partial y}\right)-\alpha p$$
 
-$$\frac{v_{i,j+1}^{n+1}-v_{i,j-1}^{n+1}}{2\Delta y} = \left(\frac{1-2\nu}{1-\nu}\right)\frac{1}{2G}(\sigma_{ice}+\alpha p_{i,j}^{n+1})-\left(\frac{\nu}{1-\nu}\right)\left(\frac{u_{i+1,j}^{n+1}-u_{i-1,j}^{n+1}}{2 \Delta x}\right)$$
+$$\frac{v_{i,j+1}^{n+1}-v_{i,j-1}^{n+1}}{2\Delta y} = \left(\frac{1-2\nu}{1-\nu}\right)\frac{1}{2G}(\sigma_{ice,i,j}^{n+1}+\alpha p_{i,j}^{n+1})-\left(\frac{\nu}{1-\nu}\right)\left(\frac{u_{i+1,j}^{n+1}-u_{i-1,j}^{n+1}}{2 \Delta x}\right)$$
 
 - For $\sigma_{xy}(x,0) = \tau_{ice}$:
 
@@ -103,13 +103,15 @@ $$ \sigma_{xy} = 2G\varepsilon_{xy} $$
 
 $$\tau_{ice}= G\left(\frac{\partial u}{\partial y}+\frac{\partial v}{\partial x}\right)$$ 
 
-$$\frac{u_{i,j+1}^{n+1}-u_{i,j-1}^{n+1}}{2\Delta y}= -\frac{v_{i+1,j}^{n+1}-v_{i-1,j}^{n+1}}{2\Delta x}+\frac{\tau_{ice}}{G}$$
+$$\frac{u_{i,j+1}^{n+1}-u_{i,j-1}^{n+1}}{2\Delta y}= -\frac{v_{i+1,j}^{n+1}-v_{i-1,j}^{n+1}}{2\Delta x}+\frac{\tau_{ice,i,j}^{n+1}}{G}$$
 
 These expressions can then be used to substitute the boundary values in the fluid diffusion equation and the 2 mechanical equations, such that the three equations become: 
 
+$$\frac{2-2\nu}{1-2\nu}\left(\frac{u_{i+1,j}^{n+1}+u_{i-1,j}^{n+1}}{\Delta x ^2}\right)+\frac{2u_{i,j-1}^{n+1}}{\Delta y^2}$$
+
 
 $$\frac{2-2\nu}{1-2\nu}\left(\frac{2v_{i,j-1}^{n+1}}{(\Delta y)^2}\right)+\left(\frac{v_{i+1,j}^{n+1}+v_{i-1,j}^{n+1}}{(\Delta x)^2}\right)-\frac{1}{1-2\nu}\left(\frac{v_{i+2,j}^{n+1}+v_{i-2,j}^{n+1}}{4(\Delta x)^2}\right)-2\left(\frac{2-2\nu}{1-2\nu}\frac{1}{(\Delta y)^2}+\frac{1}{(\Delta x)^2}-\frac{1}{4(1-2\nu)(\Delta x)^2}\right)v_{i,j}^{n+1}\\
--\frac{2\nu}{1-2\nu}\left(\frac{u_{i+1,j}^{n+1}-u_{i-1,j}^{n+1}}{\Delta x\Delta y}\right) -\frac{\alpha}{G}\frac{p_{i,j+1}^{n+1}-p_{i,j-1}^{n+1}}{2\Delta y} +\frac{2\alpha}{G\Delta y}p_{i,j}^{n+1}=-\frac{2\sigma_{ice,i,j}}{G\Delta y}$$
+-\frac{2\nu}{1-2\nu}\left(\frac{u_{i+1,j}^{n+1}-u_{i-1,j}^{n+1}}{\Delta x\Delta y}\right) -\frac{\alpha}{G}\frac{p_{i,j+1}^{n+1}-p_{i,j-1}^{n+1}}{2\Delta y} +\frac{2\alpha}{G\Delta y}p_{i,j}^{n+1}=-\frac{2\sigma_{ice,i,j}^{n+1}}{G\Delta y}-\frac{1}{G(1-2\nu)}\left(\frac{\tau_{ice,i+1,j}^{n+1}-\tau_{ice,i-1,j}^{n+1}}{2\Delta x}\right)$$
 
 The term $(p_{i,j+1} - p_{i,j-1})/2\Delta y$ is adjusted based on the fluid boundary condition -- e.g., $p = 0$, $p = p_{subglacial}$ or $\partial p/ \partial y = 0$.
 
