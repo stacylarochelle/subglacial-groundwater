@@ -113,6 +113,8 @@ $$\frac{2-2\nu}{1-2\nu}\left(\frac{2v_{i,j-1}^{n+1}}{(\Delta y)^2}\right)+\left(
 
 The term $(p_{i,j+1} - p_{i,j-1})/2\Delta y$ is adjusted based on the fluid boundary condition -- e.g., $p = 0$, $p = p_{subglacial}$ or $\partial p/ \partial y = 0$.
 
+Note that the substitutions introduce terms with subscripts $i-2$ and $i+2$ that need to be handled carefully at the horizontal boundaries. 
+
 ### Solving for $\textbf{x}$:
 - The distributions of $u$, $v$ and $p$ at time $n+1$ stored in $\textbf{x}$ can then be solved for by taking the inverse of $\textbf{A}$ and multiplying by $\textbf{b}$:
 $$\textbf{x} = \textbf{A}^{-1}\textbf{b}$$
