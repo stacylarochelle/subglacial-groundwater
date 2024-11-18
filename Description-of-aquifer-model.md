@@ -109,11 +109,12 @@ These expressions can then be used to substitute the boundary values in the flui
 
 $$\frac{2-2\nu}{1-2\nu}\left(\frac{u_{i+1,j}^{n+1}+u_{i-1,j}^{n+1}}{\Delta x ^2}\right)+\frac{2u_{i,j-1}^{n+1}}{\Delta y^2}-\left(\frac{v_{i+1,j}^{n+1}-v_{i+1,j}^{n-1}}{\Delta x \Delta y}\right)-2\left(\frac{2-2\nu}{1-2\nu(\Delta x)^2}+\frac{1}{\Delta y^2}-\frac{\nu}{(1-2\nu)(1-\nu)4(\Delta x)^2}\right)u_{i,j}^{n+1} -\frac{\nu}{(1-2\nu)(1-\nu)}\left(\frac{u_{i+2,j}^{n+1}+u_{i-2,j}^{n+1}}{4(\Delta x)^2}\right)+\left(\frac{2\nu-1}{2-2\nu}\right)\frac{\alpha}{G}\left(\frac{p_{i+1,j}^{n+1}-p_{i-1,j}^{n+1}}{2\Delta x}\right) = -\frac{2\tau_{ice,i,j}^{n+1}}{G\Delta y}-\frac{1}{2G(1-\nu)}\left(\frac{\sigma_{ice,i+1,j}^{n+1}-\sigma_{ice,i-1,j}^{n+1}}{2\Delta x}\right)$$
 
-
 $$\frac{2-2\nu}{1-2\nu}\left(\frac{2v_{i,j-1}^{n+1}}{(\Delta y)^2}\right)+\left(\frac{v_{i+1,j}^{n+1}+v_{i-1,j}^{n+1}}{(\Delta x)^2}\right)-\frac{1}{1-2\nu}\left(\frac{v_{i+2,j}^{n+1}+v_{i-2,j}^{n+1}}{4(\Delta x)^2}\right)-2\left(\frac{2-2\nu}{1-2\nu}\frac{1}{(\Delta y)^2}+\frac{1}{(\Delta x)^2}-\frac{1}{4(1-2\nu)(\Delta x)^2}\right)v_{i,j}^{n+1}\\
 -\frac{2\nu}{1-2\nu}\left(\frac{u_{i+1,j}^{n+1}-u_{i-1,j}^{n+1}}{\Delta x\Delta y}\right) -\frac{\alpha}{G}\frac{p_{i,j+1}^{n+1}-p_{i,j-1}^{n+1}}{2\Delta y} +\frac{2\alpha}{G\Delta y}p_{i,j}^{n+1}=-\frac{2\sigma_{ice,i,j}^{n+1}}{G\Delta y}-\frac{1}{G(1-2\nu)}\left(\frac{\tau_{ice,i+1,j}^{n+1}-\tau_{ice,i-1,j}^{n+1}}{2\Delta x}\right)$$
 
-The term $(p_{i,j+1} - p_{i,j-1})/2\Delta y$ is adjusted based on the fluid boundary condition -- e.g., $p = 0$, $p = p_{subglacial}$ or $\partial p/ \partial y = 0$.
+$$\frac{1}{\Delta t}\left(\frac{1-2\nu}{1-\nu}\right)\left(\frac{u_{i+1,j}^{n+1}-u_{i-1,j}^{n+1}}{2\Delta x}\right)-\frac{k}{\alpha \mu}\left(\frac{p_{i+1,j}^{n+1}+p_{i-1,j}^{n+1}}{\Delta x^2}+\frac{p_{i,j+1}^{n+1}+p_{i,j-1}^{n+1}}{\Delta y^2}\right)+\left(\frac{2k}{\alpha\mu}\left(\frac{1}{\Delta x^2}+\frac{1}{\Delta y^2}\right)+\frac{S_\varepsilon}{\alpha \Delta t}+\left(\frac{1-2\nu}{1-\nu}\right)\frac{\alpha}{G\Delta t} \right)p_{i,j}^{n+1}= -\frac{1}{\Delta t}\left(\frac{1-2\nu}{1-\nu}\right)\left(\frac{u_{i+1,j}^{n}-u_{i-1,j}^{n}}{2\Delta x}\right)+\left(\frac{S_\varepsilon}{\alpha \Delta t} -\left(\frac{1-2\nu}{1-\nu}\right)\frac{\alpha}{G\Delta t}\right)p_{i,j}^n-\left(\frac{1-2\nu}{1-\nu}\right)\frac{1}{G\Delta t}(\sigma_{ice,i,j}^{n+1}+\sigma_{ice,i,j}^{n})$$
+
+$(p_{i,j+1} - p_{i,j-1})/2\Delta y$ is adjusted based on the fluid boundary condition -- e.g., $p = 0$, $p = p_{subglacial}$ or $\partial p/ \partial y = 0$.
 
 Note that the substitutions introduce terms with subscripts $i-2$ and $i+2$ that need to be handled carefully at the horizontal boundaries. 
 
