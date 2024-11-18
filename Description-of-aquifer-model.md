@@ -85,7 +85,7 @@ These are implemented by:
 - Replacing the first mechanical equation by $v_{i,j}^{n+1} = 0$ and setting $v_{i,j-1}^{n+1}=0$ in $\mathbf{A}$ and $v_{i,j-1}^{n}=0$ in $\mathbf{b}$;
 - Replacing $p_{i,j-1}^{n+1}$ with $p_{i,j+1}^{n+1}$ in $\mathbf{A}$ since $p_{i,j+1}^{n+1} - p_{i,j-1}^{n+1} = 0$.
 
-**Left half of top boundary ($j==ny-1$ and $i<=ny/2$)**: $\sigma_{yy} = \sigma_{ice}$, $\sigma_{xy} = \tau_{ice}$, and $\frac{\partial p}{\partial y} = 0$
+**Top boundary**: $\sigma_{yy} = \sigma_{ice}$, $\sigma_{xy} = \tau_{ice}$
 
 Fixed stress boundary conditions are implemented through the constitutive relationships.
 
@@ -105,12 +105,13 @@ $$\tau_{ice}= G\left(\frac{\partial u}{\partial y}+\frac{\partial v}{\partial x}
 
 $$\frac{u_{i,j+1}^{n+1}-u_{i,j-1}^{n+1}}{2\Delta y}= -\frac{v_{i+1,j}^{n+1}-v_{i-1,j}^{n+1}}{2\Delta x}+\frac{\tau_{ice}}{G}$$
 
-These expressions can then be used to substitute the boundary values in the fluid diffusion equation and the 2 mechanical equations. 
+These expressions can then be used to substitute the boundary values in the fluid diffusion equation and the 2 mechanical equations, such that the three equations become: 
 
-**Right half of top boundary ($j==ny-1$ and $i>ny/2$)**: $\sigma_{yy} = 0$, $\sigma_{xy} = 0$, and $p = 0$
 
-- This is implemented similarly as above except that $\sigma_{ice}$ and $\tau_{ice}$ are set to 0.
-- $p = 0$ is implemented by replacing the fluid equation by $p_{i,j}^{n+1} = 0$ and setting $p_{i,j+1}^{n+1} = 0$ in the mechanical equations.
+$$\frac{2-2\nu}{1-2\nu}\left(\frac{2v_{i,j-1}^{n+1}}{(\Delta y)^2}\right)+\left(\frac{v_{i+1,j}^{n+1}+v_{i-1,j}^{n+1}}{(\Delta x)^2}\right)-\frac{1}{1-2\nu}\left(\frac{v_{i+2,j}^{n+1}+v_{i-2,j}^{n+1}}{4(\Delta x)^2}\right)-2\left(\frac{2-2\nu}{1-2\nu}\frac{1}{(\Delta y)^2}+\frac{1}{(\Delta x)^2}-\frac{1}{4(1-2\nu)(\Delta x)^2}\right)v_{i,j}^{n+1}\\
+-\frac{2\nu}{1-2\nu}\left(\frac{u_{i+1,j}^{n+1}-u_{i-1,j}^{n+1}}{\Delta x\Delta y}\right) -\frac{\alpha}{G}\frac{p_{i,j+1}^{n+1}-p_{i,j-1}^{n+1}}{2\Delta y} +\frac{2\alpha}{G\Delta y}p_{i,j}^{n+1}=-\frac{2\sigma_{ice,i,j}}{G\Delta y}$$
+
+The term $(p_{i,j+1} - p_{i,j-1})/2\Delta y$ is adjusted based on the fluid boundary condition -- e.g., $p = 0$, $p = p_{subglacial}$ or $\partial p/ \partial y = 0$.
 
 ### Solving for $\textbf{x}$:
 - The distributions of $u$, $v$ and $p$ at time $n+1$ stored in $\textbf{x}$ can then be solved for by taking the inverse of $\textbf{A}$ and multiplying by $\textbf{b}$:
