@@ -1,1 +1,1 @@
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jkingslake/subglacial-groundwater/add_requirements)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/stacylarochelle/subglacial-groundwater/HEAD)
